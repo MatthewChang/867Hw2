@@ -1,15 +1,17 @@
 from numpy import *
 from plotBoundary import *
-# import your SVM training code
+from SVM import *
 
 # parameters
-name = 'ls'
+name = 'stdev1'
 print '======Training======'
 # load data from csv files
 train = loadtxt('data/data_'+name+'_train.csv')
 # use deep copy here to make cvxopt happy
 X = train[:, 0:2].copy()
 Y = train[:, 2:3].copy()
+
+SVM(X,Y,lambda x,y: x*y.T)
 
 # Carry out training, primal and/or dual
 ### TODO ###
