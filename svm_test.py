@@ -1,6 +1,7 @@
 from numpy import *
 from plotBoundary import *
 from SVM import *
+from LR import *
 
 # parameters
 name = 'stdev1'
@@ -11,12 +12,19 @@ train = loadtxt('data/data_'+name+'_train.csv')
 X = train[:, 0:2].copy()
 Y = train[:, 2:3].copy()
 
-SVM(X,Y,lambda x,y: x*y.T)
+X = phi(X)
 
+W = SVM(X,Y,lambda x,y: x*y.T)
+print W
 # Carry out training, primal and/or dual
 ### TODO ###
 # Define the predictSVM(x) function, which uses trained parameters
 ### TODO ###
+
+def predictSVM(x):
+    v = W*phi(np.matrix(x)).T
+    return v
+    
 
 # plot training results
 plotDecisionBoundary(X, Y, predictSVM, [-1, 0, 1], title = 'SVM Train')
@@ -29,4 +37,4 @@ X = validate[:, 0:2]
 Y = validate[:, 2:3]
 # plot validation results
 plotDecisionBoundary(X, Y, predictSVM, [-1, 0, 1], title = 'SVM Validate')
-
+pl.show()
