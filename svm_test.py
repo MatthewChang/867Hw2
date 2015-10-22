@@ -12,7 +12,7 @@ train = loadtxt('data/data_'+name+'_train.csv')
 X = train[:, 0:2].copy()
 Y = train[:, 2:3].copy()
 
-W,b = SVM(X,Y,lambda x,y: x*y.T)
+W,b = SVM(X,Y,lambda x,y: x*y.T,1)
 print W,b
 # Carry out training, primal and/or dual
 ### TODO ###

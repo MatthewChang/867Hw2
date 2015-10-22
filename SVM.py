@@ -1,7 +1,7 @@
 import numpy as np
 from cvxopt import matrix, solvers
 
-def SVM(X,Y,k):
+def SVM(X,Y,k,C):
         X = np.matrix(X)
         P = np.zeros((X.shape[0],X.shape[0]))
 
@@ -11,8 +11,15 @@ def SVM(X,Y,k):
                         P[r][c] = val
         P = matrix(P)
         q = -matrix(np.ones((X.shape[0],1)))
-        G = -matrix(np.eye(X.shape[0]))
-        h = matrix(np.zeros((X.shape[0],1)))
+        
+        G1 = -np.eye(X.shape[0])
+        G2 = np.eye(X.shape[0])        
+        G = matrix(np.concatenate((G1,G2),axis=0))
+
+        h1 = np.zeros((X.shape[0],1))
+        h2 = C*np.ones((X.shape[0],1))       
+        h = matrix(np.concatenate((h1,h2),axis=0))
+        
         A = matrix(Y.T)
         b = matrix(np.zeros((1,1)))
 
