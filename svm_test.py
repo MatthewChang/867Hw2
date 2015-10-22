@@ -12,17 +12,15 @@ train = loadtxt('data/data_'+name+'_train.csv')
 X = train[:, 0:2].copy()
 Y = train[:, 2:3].copy()
 
-X = phi(X)
-
-W = SVM(X,Y,lambda x,y: x*y.T)
-print W
+W,b = SVM(X,Y,lambda x,y: x*y.T)
+print W,b
 # Carry out training, primal and/or dual
 ### TODO ###
 # Define the predictSVM(x) function, which uses trained parameters
 ### TODO ###
 
 def predictSVM(x):
-    v = W*phi(np.matrix(x)).T
+    v = W*np.matrix(x).T - b
     return v
     
 

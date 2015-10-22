@@ -16,12 +16,20 @@ def SVM(X,Y,k):
         A = matrix(Y.T)
         b = matrix(np.zeros((1,1)))
 
-        #solution = solvers.qp(P, q, G, h, A, b)
-        solution = solvers.qp(P, q, G, h)
+        solution = solvers.qp(P, q, G, h, A, b)
+        #solution = solvers.qp(P, q, G, h)
         
         sol = solution['x']
         W = np.zeros(X[0].shape);
         
         for i in range(0,X.shape[0]):
                 W += X[i]*sol[i]*Y[i][0]
-        return W
+        nsv = 0;
+        b = 0;
+        for i in range(0,X.shape[0]):
+                if(sol[i] > 0.0001):
+                        nsv += 1
+                        b += W*X[i].T - Y[i][0]
+        b = b/nsv
+        print nsv
+        return (W,b)
