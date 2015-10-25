@@ -12,16 +12,33 @@ train = loadtxt('data/data_'+name+'_train.csv')
 X = train[:, 0:2].copy()
 Y = train[:, 2:3].copy()
 
-W,b = SVM(X,Y,lambda x,y: x*y.T,1)
-print W,b
-# Carry out training, primal and/or dual
-### TODO ###
-# Define the predictSVM(x) function, which uses trained parameters
-### TODO ###
+line = lambda x,y: x*y.T
+quad = lambda x,y: (x*y.T + 1)**2
+cube = lambda x,y: (x*y.T + 1)**4
+
+def norm_pdf(x,var):
+    return exp(-x**2/(2*var))/sqrt(2*pi*var)
+
+def gen_gaussian_kernel(var):
+    def k(x,y):
+        z = x-y
+        #print ((x-y)*(x-y).T)[0,0]
+        return exp(-z*z.T/(2*var))
+    return k
+
+
+k = gen_gaussian_kernel(9)
+#k= cube
+C,b = SVM(X,Y,k,1)
+
+def eval_point(x):
+    v = 0
+    for coeff,xi,yi in C:
+        v += coeff*k(x,xi)
+    return v 
 
 def predictSVM(x):
-    v = W*np.matrix(x).T - b
-    return v
+    return eval_point(x)-b
     
 
 # plot training results

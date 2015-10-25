@@ -10,6 +10,7 @@ def SVM(X,Y,k,C):
                         val = Y[r]*Y[c]*k(X[r],X[c])
                         P[r][c] = val
         P = matrix(P)
+        print P
         q = -matrix(np.ones((X.shape[0],1)))
         
         G1 = -np.eye(X.shape[0])
@@ -23,20 +24,26 @@ def SVM(X,Y,k,C):
         A = matrix(Y.T)
         b = matrix(np.zeros((1,1)))
 
-        solution = solvers.qp(P, q, G, h, A, b)
-        #solution = solvers.qp(P, q, G, h)
+        #solution = solvers.qp(P, q, G, h, A, b)
+        solution = solvers.qp(P, q, matrix(G1), matrix(h1),A, b)
         
         sol = solution['x']
         W = np.zeros(X[0].shape);
         
-        for i in range(0,X.shape[0]):
-                W += X[i]*sol[i]*Y[i][0]
-        nsv = 0;
-        b = 0;
+        C = []
         for i in range(0,X.shape[0]):
                 if(sol[i] > 0.0001):
-                        nsv += 1
-                        b += W*X[i].T - Y[i][0]
-        b = b/nsv
-        print nsv
-        return (W,b)
+                        C.append((sol[i]*Y[i][0],X[i],Y[i]))
+
+        def eval_point(x):
+            v = 0
+            for coeff,xi,yi in C:
+                v += coeff*k(x,xi)
+            return v 
+
+        b = 0;
+        for coeff,xi,yi in C:
+            b += (eval_point(xi)-yi)
+        b /= len(C)
+        
+        return C,b
