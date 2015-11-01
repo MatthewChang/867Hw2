@@ -23,7 +23,6 @@ disp('======Validation======');
 validate = importdata(strcat('data/data_',name,'_validate.csv'));
 X = validate(:,1:2);
 Y = validate(:,3);
-print Y
 
 % plot validation results
 plotDecisionBoundary(X, Y, predictLR, [0.5], 'LR Validate');

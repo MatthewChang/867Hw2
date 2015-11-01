@@ -30,7 +30,7 @@ def SVM(X,Y,k,C):
         sol = solution['x']
         W = np.zeros(X[0].shape);
         
-        C = []
+        C = [] #set of support vectors, [a*y_i,x_i,y_i]
         for i in range(0,X.shape[0]):
                 if(sol[i] > 0.0001):
                         C.append((sol[i]*Y[i][0],X[i],Y[i]))
