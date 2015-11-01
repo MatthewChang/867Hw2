@@ -24,8 +24,8 @@ def SVM(X,Y,k,C):
         A = matrix(Y.T)
         b = matrix(np.zeros((1,1)))
 
-        #solution = solvers.qp(P, q, G, h, A, b)
-        solution = solvers.qp(P, q, matrix(G1), matrix(h1),A, b)
+        solution = solvers.qp(P, q, G, h, A, b)
+        #solution = solvers.qp(P, q, matrix(G1), matrix(h1),A, b)
         
         sol = solution['x']
         W = np.zeros(X[0].shape);
