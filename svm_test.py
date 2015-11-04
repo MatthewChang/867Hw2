@@ -4,7 +4,7 @@ from SVM import *
 from LR import *
 
 # parameters
-name = 'stdev1'
+name = 'stdev2'
 print '======Training======'
 # load data from csv files
 train = loadtxt('data/data_'+name+'_train.csv')
@@ -28,7 +28,7 @@ def gen_gaussian_kernel(var):
 
 
 k = gen_gaussian_kernel(9)
-#k= cube
+k= line
 C,b = SVM(X,Y,k,1)
 
 def eval_point(x):
